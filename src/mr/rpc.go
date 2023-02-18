@@ -27,7 +27,7 @@ type ExampleReply struct {
 // Add your RPC definitions here.
 // This is a Get() request for now
 type WorkerFileNameRequest struct {
-	hasMapped bool // if the worker has completed a Map Task. Might have the coordinator just read from the temp file to track map files
+	hasMapped bool 
 }
 
 type WorkerFileNameResponse struct {

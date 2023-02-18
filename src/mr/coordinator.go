@@ -12,12 +12,14 @@ type Coordinator struct {
 	// Your definitions here.
 	filesToProcess []string
 	nReduce        int
-	reduceInUse    int //no idea if I will use this
+	numProcessedFiles    int //no idea if I will use this
 }
 
 // Your code here -- RPC handlers for the worker to call.
 func (c *Coordinator) GetNextFile(args *WorkerFileNameRequest, reply *WorkerFileNameResponse) error {
-	err := nil
+	
+	
+	return nil
 }
 
 // an example RPC handler.
@@ -58,7 +60,9 @@ func (c *Coordinator) Done() bool {
 func MakeCoordinator(files []string, nReduce int) *Coordinator {
 	c := Coordinator{}
 
-	// Your code here.
+	c.filesToProcess = files
+	c.nReduce = nReduce
+	c.numProcessedFiles = 0
 
 	c.server()
 	return &c
