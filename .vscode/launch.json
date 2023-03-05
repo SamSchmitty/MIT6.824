@@ -23,7 +23,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/src/main/mrworker.go",
-            "args": ["../main/wc.so"],
+            "args": ["../main/wc.so", "pg-dorian_gray.txt", "pg-frankenstein.txt", "pg_grimm.txt", "pg-huckleberry_finn.txt", "pg-metamorphosis.txt", "pg-sherlock_holmes.txt", "pg-tom_sawyer.txt"],
             "cwd": "${workspaceFolder}/src/main",
             "buildFlags": "-race",
             "dlvLoadConfig": {
@@ -40,7 +40,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/src/main/mrsequential.go",
-            "args": ["wc.so", "pg-being_ernest.txt"],
+            "args": ["wc.so", "pg-being_ernest.txt", "pg-dorian_gray.txt", "pg-frankenstein.txt", "pg_grimm.txt", "pg-huckleberry_finn.txt", "pg-metamorphosis.txt", "pg-sherlock_holmes.txt", "pg-tom_sawyer.txt"],
             "cwd": "${workspaceFolder}/src/main",
         },
     ]
