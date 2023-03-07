@@ -10,15 +10,17 @@ import (
 
 type Coordinator struct {
 	// Your definitions here.
-	filesToProcess []string
-	nReduce        int
-	numProcessedFiles    int //no idea if I will use this
+	filesToProcess    []string
+	nReduce           int
+	numProcessedFiles int //no idea if I will use this
 }
 
 // Your code here -- RPC handlers for the worker to call.
+// Returns a files string based on the number of Processed files. This probably needs a mutex lock around it when called.
+// Will also need some way to track coordinator and tasks to stop execution if the task is taking too long.
 func (c *Coordinator) GetNextFile(args *WorkerFileNameRequest, reply *WorkerFileNameResponse) error {
-	
-	
+	reply.FileName = c.filesToProcess[c.numProcessedFiles]
+	c.numProcessedFiles += 1
 	return nil
 }
 

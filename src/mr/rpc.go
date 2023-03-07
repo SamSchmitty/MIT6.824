@@ -27,7 +27,7 @@ type ExampleReply struct {
 // Add your RPC definitions here.
 // This is a Get() request for now
 type WorkerFileNameRequest struct {
-	hasMapped bool 
+	HasMapped bool
 }
 
 type WorkerFileNameResponse struct {

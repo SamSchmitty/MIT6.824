@@ -23,16 +23,17 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/src/main/mrworker.go",
-            "args": ["../main/wc.so", "pg-dorian_gray.txt", "pg-frankenstein.txt", "pg_grimm.txt", "pg-huckleberry_finn.txt", "pg-metamorphosis.txt", "pg-sherlock_holmes.txt", "pg-tom_sawyer.txt"],
+            "args": ["../main/wc.so"],
             "cwd": "${workspaceFolder}/src/main",
-            "buildFlags": "-race",
-            "dlvLoadConfig": {
-                "followPointers": true,
-                "maxVariableRecurse": 1,
-                "maxStringLen": 400,
-                "maxArrayValues": 64,
-                "maxStructFields": -1
-            }
+            //"buildFlags": "-race",
+            //"dlvLoadConfig": {
+            //    "debugAdapter": "legacy",
+            //    "followPointers": true,
+            //    "maxVariableRecurse": 1,
+            //    "maxStringLen": 400,
+            //    "maxArrayValues": 64,
+            //    "maxStructFields": -1
+            //}
         },
         {
             "name": "Launch mr sequential",

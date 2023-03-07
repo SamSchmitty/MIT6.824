@@ -3,8 +3,10 @@ package mr
 import (
 	"fmt"
 	"hash/fnv"
+	"io/ioutil"
 	"log"
 	"net/rpc"
+	"os"
 )
 
 // Map functions return a slice of KeyValue.
@@ -25,8 +27,27 @@ func ihash(key string) int {
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
 
-	// uncomment to send the Example RPC to the coordinator.
-	// CallExample()
+	args := WorkerFileNameRequest{}
+
+	args.HasMapped = false
+
+	reply := WorkerFileNameResponse{}
+
+	call("Coordinator.GetNextFile", &args, &reply)
+
+	file, err := os.Open(reply.FileName)
+	if err != nil {
+		log.Fatalf("cannot open %v", reply.FileName)
+	}
+	content, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatalf("cannot read %v", reply.FileName)
+	}
+	file.Close()
+	kva := mapf(reply.FileName, string(content))
+	for _, kvp := range kva {
+		fmt.Println("Key: ", kvp.Key, "Value: ", kvp.Value)
+	}
 }
 
 // example function to show how to make an RPC call to the coordinator.
