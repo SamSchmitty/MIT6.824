@@ -1,6 +1,7 @@
 package mr
 
 import (
+	"encoding/json"
 	"fmt"
 	"hash/fnv"
 	"io/ioutil"
@@ -24,9 +25,36 @@ func ihash(key string) int {
 }
 
 // main/mrworker.go calls this function.
+// worker should be reworked to ask for next task, this is another sequential worker.
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
 
+	fileName := CallNextFile()
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		log.Fatalf("cannot open %v", fileName)
+	}
+	content, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatalf("cannot read %v", fileName)
+	}
+	file.Close()
+
+	kv := mapf(fileName, string(content))
+
+	intermediate, _ := os.Create("mr-0-0")
+	enc := json.NewEncoder(intermediate)
+	for _, kvp := range kv {
+		//need to break out from the loop and log error if one occurs
+		err := enc.Encode(kvp)
+		if err != nil {
+			log.Fatalf("Failed to encode intermediate file %v. err: %v", fileName, err.Error())
+		}
+	}
+}
+
+func CallNextFile() string {
 	args := WorkerFileNameRequest{}
 
 	args.HasMapped = false
@@ -35,19 +63,7 @@ func Worker(mapf func(string, string) []KeyValue,
 
 	call("Coordinator.GetNextFile", &args, &reply)
 
-	file, err := os.Open(reply.FileName)
-	if err != nil {
-		log.Fatalf("cannot open %v", reply.FileName)
-	}
-	content, err := ioutil.ReadAll(file)
-	if err != nil {
-		log.Fatalf("cannot read %v", reply.FileName)
-	}
-	file.Close()
-	kva := mapf(reply.FileName, string(content))
-	for _, kvp := range kva {
-		fmt.Println("Key: ", kvp.Key, "Value: ", kvp.Value)
-	}
+	return reply.FileName
 }
 
 // example function to show how to make an RPC call to the coordinator.
